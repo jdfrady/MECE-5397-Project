@@ -1,21 +1,11 @@
 %% Explicit Calculation
 %% User Inputs
-clc;                          % Clearing the command line 
-T = 1;                       % Simulation Time
-nt = 2;                   % Number of time steps
-ny = 4;                      % Number of y steps 
-nx = 4;                      % Number of x steps
-ax = 0;                       % Value of lower x limit
-bx = 2*pi;                    % Value of upper x limit
-ay = 0;                       % Value of lower y limit
-by = 2*pi;                    % Value of upper y limit
-
+function u = Explicit(T,nt,ny,nx,ax,bx,ay,by)
 %% Definitions and Initializatons
 dx = (bx-ax)/(nx+1);          % X step size
 dy = (by-ay)/(ny+1);          % Y step Size
 dt = T/(nt+1);                % Time step size
 u = zeros(nx+2, ny+3, nt+1);  % Allocating memory 
-
 %% X-axis Boundary Condidions; u(x,y=ay)
 temp1 = fb(ay, by);           % Calling function fb for inputs ay & by
 temp2 = bx - ax;              % Temporary varibale to simplify for loop
@@ -23,7 +13,7 @@ temp3 = gb(ay, by);           % Calling function gb for inputs ay & by
 temp4 = temp3 - temp1;        % Temporary varibale to simplify for loop
 for t=1:nt+1
     for k = 2:nx+2            % Setting boundary condition 
-        u(1,k,t) = temp1 + (((k-1)*dx)/temp2)*temp4 
+        u(1,k,t) = temp1 + (((k-1)*dx)/temp2)*temp4; 
     end 
 end
 %% Y-axis Boundary Condidions; u(x=bx,y)
@@ -50,11 +40,6 @@ for t = 1:nt                  % Iterating time
         u(ny+2,k,t) = u(ny+1,k,t);
     end
 end
-
-
-%% Exact Solution
-%% Visualization
-    
-    surf(u((2:(ny+1)),(2:(nx+1)),nt+1))
+end
 
 
